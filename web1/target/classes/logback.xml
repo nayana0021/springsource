@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender"> <!--  ConsleAppender 화면 출력을 할 것임 -->
+    <!-- encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%kvp- %msg%n</pattern>
+    </encoder>
+  </appender> <!-- 로그 출력을 어디로 할래를 써놓음 -->
+
+	<logger name="org.springframework.context" level="info"/> <!-- 레벨 개별로 줄 수 있다 -->
+	<logger name="org.springframework.jdbc" level="debug"/>
+	<logger name="com.spring.mapper" level="debug"/> <!-- 여기 패키지에 있는 것들은 디버그 레벨로 찍어줘 -->
+
+<!-- Appender는 여러개 올 수 있다 -->
+  <root level="info"> <!-- 로그를 기록할 떄 레벨이있음(정해져있음) 디버그 레벨을 가지고 로그를 출력을 할건데 밑에 거를 참조해줘 -->
+    <appender-ref ref="STDOUT" /> 
+  </root>
+</configuration>
