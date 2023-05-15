@@ -42,5 +42,5 @@ public class HomeController {
 		return "result";
 	}
 //GetMapping / PostMapping 은 메소드에만 붙일수있다
-	
+
 }

@@ -3,11 +3,15 @@ package com.spring.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.spring.domain.LoginDTO;
+import com.spring.domain.RegisterDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,18 +48,26 @@ public class MemberController {
 //	}
 
 	
-	@PostMapping("/login") //@RequestParam이 userid 인 것을 id로 받아준다는 뜻임
-	public void loginPost(@RequestParam("userid") String id, String password) { //login.jsp 에서 name인 것 받음
+//	@PostMapping("/login") //@RequestParam이 userid 인 것을 id로 받아준다는 뜻임
+//	public void loginPost(@RequestParam("userid") String id, String password) { //login.jsp 에서 name인 것 받음
+//		log.info("login post...");
+//		// 사용자 입력값 id, password 가져오기
+//		System.out.println("id "+id);
+//		System.out.println("password "+password);
+//	}
+
+	@PostMapping("/login") 
+	public String loginPost(LoginDTO dto, Model model) { 
 		log.info("login post...");
-		// 사용자 입력값 id, password 가져오기
-		System.out.println("id "+id);
-		System.out.println("password "+password);
+		// 사용자 입력값 id, password 
+		System.out.println("id "+dto.getId());
+		System.out.println("password "+dto.getPassword());
+		
+		model.addAttribute("id", dto.getId());
+		// main.jsp 보여주기
+		return "/member/main";
 	}
 
-	
-	
-	
-	
 	
 	
 	
@@ -66,4 +78,20 @@ public class MemberController {
 //		return "/member/register"; // 리턴이 있다면 뷰리졸버가 돌아서 -> /WEB_INF/views/register.jsp 로 만들어줌
 	}
 
+	// /member/register + POST 처리
+	// DTO 작성
+	// 사용자 입력값이 잘 들어왔는지 확인
+	// login.jsp 보여주기
+	@PostMapping("/register")
+	public String registerPost(RegisterDTO dto) {
+		log.info("회원가입 요청");
+		log.info(dto.toString());
+		
+		// redirect : 붙게 되면 뷰리졸버가 도는게 아니고 DispatcherServlet 이 동작
+		// == response.sendRedirect()
+		// http://localhost:8080/member/login + GET 요청이 들어가게 됨
+		return "redirect:/member/login"; // 경로가 되어버림 (redirect: 가 붙지 않으면 뷰리졸버가 돌아서 원하는 jsp 로 이동하게됨 : 포워드)
+	}
+	
+	
 }
