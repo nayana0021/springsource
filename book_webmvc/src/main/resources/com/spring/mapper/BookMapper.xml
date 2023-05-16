@@ -17,4 +17,36 @@
 		select * from booktbl where code=#{code}
 	</select>
 	
+	<update id="update">
+		update booktbl set price=#{price} where code=#{code}
+	</update>
+	
+	<delete id="delete">
+		delete from booktbl where code=#{code}
+	</delete>
+	
+	<select id="search" resultType="com.spring.domain.BookDTO">
+		
+<!-- 	조건이 criteria 변수에 들어있는 상황
+	
+		select * from booktbl where writer='홍길동'
+		select * from booktbl where title='자바'
+ -->		
+  		select code,title,writer,price from booktbl where
+ 		
+ 		<if test="criteria == 'writer'.toString() ">
+ 			writer = #{keyword}
+ 		</if>
+ 		 <if test="criteria == 'title'.toString() ">
+ 			title like '%'||#{keyword}||'%'
+ 		</if>
+		
+ 		<!-- 모델2에서 할 때
+		“select code,title,writer,price from booktbl where “+criteria+” like ?” 변수 붙여주는 방식으로 가능
+		이것을 구현함 -> ${criteria} 로 사용 (이렇게도 가능 참고사항으로 알아두면 됨)
+ -->
+ 		<!-- select code,title,writer,price from booktbl where ${criteria} like '%'||#{keyword}||'%' -->
+ 		
+	</select>
+	
 </mapper>
