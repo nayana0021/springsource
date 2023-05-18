@@ -9,8 +9,8 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 		
-		<!-- com.spring.service 여기 어노테이션 활성화 -->
-		<context:component-scan base-package="com.spring.service"/>
+	<!-- com.spring.service 여기 어노테이션 활성화 -->
+	<context:component-scan base-package="com.spring.service"/>
 		
 	<!-- DBCP : HikariCP 라이브러리 사용 -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">

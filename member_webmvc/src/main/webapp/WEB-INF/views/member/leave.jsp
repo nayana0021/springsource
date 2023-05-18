@@ -2,7 +2,7 @@
 <%@ include file="../include/header.jsp" %>
 	<h1>회원탈퇴</h1>
  <main class="form-signin w-100 m-auto">
-  <form method="post" action='<c:url value="/leave.do"/>'> 
+  <form method="post" action='<c:url value="/member/leave"/>'> 
     <div class="form-floating">
       <input type="text" class="form-control" id="floatingInput" placeholder="userid" name="userid" value="${loginDto.userid}">
       <label for="floatingInput">UserId</label>

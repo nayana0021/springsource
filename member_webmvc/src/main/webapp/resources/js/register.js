@@ -21,7 +21,7 @@ document.querySelector(".btn-danger").addEventListener("click", ()=>{
 	
 	// , {} 콤마하고 중괄호쓰면 문장 여러개라는 뜻이고 method post 로 보내고 
 	// 키:밸류 형식으로 userid 객체 생성
-	fetch("dupId.do",{
+	fetch("/member/dupId",{
 		method:"post",
 		body: new URLSearchParams({userid:userid})
 		
