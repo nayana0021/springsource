@@ -59,19 +59,46 @@
 </table>
 <!-- 페이지 나누기 시작 -->
 <nav aria-label="...">
-  <ul class="pagination justify-content-center">
-    <li class="page-item disabled">
-      <a class="page-link">Previous</a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item active" aria-current="page">
-      <a class="page-link" href="#">2</a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#">Next</a>
-    </li>
-  </ul>
+  	<ul class="pagination justify-content-center">
+		  <c:if test="${pageDTO.prev}">
+		    <li class="page-item"><a class="page-link" href="${pageDTO.startPage-1}">Previous</a></li>
+		  </c:if>
+		    
+		   <c:forEach begin="${pageDTO.startPage}" end="${pageDTO.endPage}" var="idx">
+		    
+		    <li class="page-item ${pageDTO.cri.pageNum==idx?'active':'' }"><a class="page-link" href="${idx}">${idx}</a></li>
+		    
+		   </c:forEach>
+		    
+		   	<c:if test="${pageDTO.next}">
+		    <li class="page-item"><a class="page-link" href="${pageDTO.endPage+1}">Next</a></li>
+		   </c:if>
+  	</ul>
 </nav>
 <!-- 페이지 나누기 종료 -->
+ <!-- Modal -->
+ <div class="modal" tabindex="-1" id="registerModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">게시글 등록</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>처리가 완료되었습니다.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+	const result = '${result}';
+	//result = 'success'; 수정, 삭제
+	// result = '35'; 등록
+</script>
+<script src="/resources/js/list.js"></script>
 <%@ include file="../include/footer.jsp" %>

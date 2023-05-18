@@ -3,18 +3,51 @@
 <mapper namespace="com.spring.mapper.BoardMapper">
 
 	<!-- 전체조회 -->
+	<!-- 	
 	<select id="list" resultType="com.spring.domain.BoardDTO">
 		select bno,title,writer,regdate,updatedate from spring_board order by bno desc, regdate desc
-	</select>
+	</select>	-->	
 	
+	<!-- 페이지 나누기 조회 -->
+ 	<select id="list" resultType="com.spring.domain.BoardDTO">
+ 		<![CDATA[
+ 		select bno, title, writer, regdate, updatedate
+		from (select /*+INDEX_DESC(spring_board pk_spring_board)*/ rownum rn, bno, title, writer, regdate, updatedate
+		        from spring_board
+		        where rownum <= (#{pageNum}*#{amount}))
+		where rn > (#{pageNum}-1)*#{amount}
+ 		]]>
+ 	</select>
+ 
+ 	<!-- 전체 게시물 개수 : totalCnt -->
+ 	<select id="totalCnt" resultType="java.lang.Integer">
+ 		select count(*) from spring_board
+ 	</select>
+ 
 	<!-- 글 등록 --> <!-- 날짜는 자동으로 디폴트가 sysdate 다 -->
 	<insert id="insert">
-		insert into spring_board (bno,title,content,writer)
-		values(seq_board.nextval,#{title},#{content},#{writer})
+		<!-- 주로 pk 값을 미리 SQL 을 통해서 처리해 두고 특정한 이름으로 결과를 보관 -->
+		<selectKey keyProperty="bno" order="BEFORE" resultType="int">
+			select seq_board.nextval from dual
+		</selectKey>
+	
+		insert into spring_board(bno,title,content,writer)<!-- 시퀀스를 bno에 넣어줌..? -->
+		values(#{bno},#{title},#{content},#{writer})<!-- dto랑 일치하게 써주면 알아서 해준다 dto의 bno 가 bno 에 담긴다 -->
 	</insert>
 	
 	<!-- 특정 번호 조회 : bno 일치하는 내용 조회 -->
-	<select id="read">
-		select title,content,writer form spring_board where bno=#{bno}
+	<select id="get" resultType="com.spring.domain.BoardDTO">
+		select bno,title,content,writer from spring_board where bno=#{bno}
 	</select>
+	
+	<!-- 글 수정 : bno 일치 시 (title, content, updatedate -->
+	<update id="update">
+		update spring_board set title=#{title},content=#{content},updatedate=sysdate 
+		where bno=#{bno}
+	</update>
+	
+	<!-- 게시글 삭제 -->
+	<delete id="delete">
+		delete from spring_board where bno=#{bno}
+	</delete>
 </mapper>
