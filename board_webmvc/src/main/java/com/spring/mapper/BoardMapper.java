@@ -12,4 +12,5 @@ public interface BoardMapper {
 	public int update(BoardDTO dto);
 	public int delete(int bno);
 	public int totalCnt();
+	public int totalCnt(Criteria cri);
 }

@@ -17,5 +17,6 @@ public interface BoardService {
 	// 게시글 삭제
 	public boolean delete(int bno);
 	// 전체 게시글 개수 조회
-	public int getTotalCnt();
+	public int getTotalCnt(Criteria cri);
+	
 }
