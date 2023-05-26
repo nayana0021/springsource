@@ -11,8 +11,8 @@
 	<!-- 페이지 나누기 조회 -->
  	<select id="list" resultType="com.spring.domain.BoardDTO">
  		<![CDATA[
- 		select bno, title, writer, regdate, updatedate
-		from (select /*+INDEX_DESC(spring_board pk_spring_board)*/ rownum rn, bno, title, writer, regdate, updatedate
+ 		select bno, title, writer, regdate, updatedate, replycnt
+		from (select /*+INDEX_DESC(spring_board pk_spring_board)*/ rownum rn, bno, title, writer, regdate, updatedate, replycnt
 		        from spring_board
 		        where 
 		   ]]>  
@@ -31,6 +31,15 @@
  			<include refid="criteria"></include>
  		bno > 0
  	</select>
+ 	
+ 	<!-- 댓글 수 추가 -->
+ 	<update id="updateReplyCnt">
+ 		update spring_board set replycnt = replycnt + #{amount}
+ 		where bno=#{bno}
+ 	</update>
+ 	
+
+ 	
  	
  	<!-- 동적 쿼리 (마이바티스 문법 id임의로 줌
  	

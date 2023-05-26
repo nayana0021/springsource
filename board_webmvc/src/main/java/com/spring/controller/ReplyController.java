@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.domain.Criteria;
 import com.spring.domain.ReplyDTO;
+import com.spring.domain.ReplyPageDTO;
 import com.spring.service.ReplyService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -53,12 +54,12 @@ public class ReplyController {
 	//	http://localhost:8080/replies/pages/bno/ + GET 
 	
 	@GetMapping("/pages/{bno}/{page}")
-	public ResponseEntity<List<ReplyDTO>> select(@PathVariable("bno") int bno, @PathVariable("page") int page){
+	public ResponseEntity<ReplyPageDTO> select(@PathVariable("bno") int bno, @PathVariable("page") int page){
 		log.info("댓글 조회 "+bno);
 		
 		Criteria cri = new Criteria(page, 10);
 		
-		return new ResponseEntity<List<ReplyDTO>>(reService.getList(cri,bno), HttpStatus.OK);
+		return new ResponseEntity<ReplyPageDTO>(reService.getList(cri,bno), HttpStatus.OK);
 	}
 	
 	//	http://localhost:8080/replies/rno + PUT + 수정데이터(json)
