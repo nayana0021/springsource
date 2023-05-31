@@ -6,11 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.spring.domain.AttachFileDTO;
 import com.spring.domain.BoardDTO;
 import com.spring.domain.Criteria;
 import com.spring.mapper.AttachMapper;
 import com.spring.mapper.BoardMapper;
+import com.spring.mapper.ReplyMapper;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class BoardServiceImpl implements BoardService {
 
@@ -18,6 +23,8 @@ public class BoardServiceImpl implements BoardService {
 	private BoardMapper mapper;
 	@Autowired
 	private AttachMapper attachMapper;
+	@Autowired
+	private ReplyMapper replyMapper;
 	
 	@Override
 	public List<BoardDTO> getList(Criteria cri) {
@@ -45,22 +52,57 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public BoardDTO getRow(int bno) {
+		
+//		BoardDTO dto = mapper.readAttach(bno);
+//		log.info("상세 + 파일첨부 "+dto);
+		
 		return mapper.get(bno);
 	}
 
+	@Transactional
 	@Override
 	public boolean update(BoardDTO dto) {
-		return mapper.update(dto)==1?true:false;
+		
+		boolean updateFlag = mapper.update(dto)==1?true:false;
+		
+		// 기존 첨부 목록 제거
+		attachMapper.deleteAll(dto.getBno());
+		
+		// 첨부파일이 있다면
+		if(dto.getAttachList() == null || dto.getAttachList().size() == 0) {
+			return updateFlag;
+		}
+		
+		// 첨부목록 삽입
+		dto.getAttachList().forEach(attach -> {
+			attach.setBno(dto.getBno());
+			attachMapper.insert(attach);
+		});
+
+		return updateFlag;
 	}
 
+	@Transactional
 	@Override
 	public boolean delete(int bno) {
+		
+		// 자식 댓글 삭제
+		replyMapper.deleteAll(bno);
+		
+		//첨부파일 삭제
+		attachMapper.deleteAll(bno);
+		
 		return mapper.delete(bno)==1?true:false;
 	}
 
 	@Override
 	public int getTotalCnt(Criteria cri) {
 		return mapper.totalCnt(cri);
+	}
+
+	@Override
+	public List<AttachFileDTO> getAttachList(int bno) {
+		return attachMapper.select(bno);
 	}
 
 

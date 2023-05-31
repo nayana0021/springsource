@@ -71,7 +71,9 @@ function showUploadedFile(uploadResultArr) {
   document.querySelector(".uploadResult ul").insertAdjacentHTML("beforeend", str); //append 개념으로 파일이 추가된다
 }
 
-// x 클릭 시 alert() 창 띄우기
+// x 클릭 시 첨부파일 제거
+// register.jsp 에서 사용하는 개념하고 modify.jsp 사용하는 개념은 다름
+
 document.querySelector(".uploadResult").addEventListener("click", (e) => {
   // 자식한테 이벤트가 일어나면 부모에세 전파 ==> 이벤트 전파
   // 실제 이벤트가 발생한 대상 : 자식 ==> e.target
@@ -90,27 +92,38 @@ document.querySelector(".uploadResult").addEventListener("click", (e) => {
   // x 가 눌러진 li 가져오기
   const li = e.target.closest("li");
 
-  // script 에서 <form> 태그 작성 과 비슷한 개념임
-  const formData = new FormData();
-  formData.append("fileName", targetFile);
-  formData.append("type", type);
+  //  path = '/WEB-INF/views/board/modify.jsp';
+  //  path = '/WEB-INF/views/board/register.jsp';
 
-  // /deleteFile?fileName=2023/05/20/test.jpg&type=image 이렇게 하고싶다면 fetch 부분에 써도 됨.. - 강의 설명 0530 11시 55분
-  // const data = new URLSearchParams(formData); - 파라메터로 주소줄에 딸려보내는 방식..
-
-  fetch("/deleteFile", {
-    method: "post",
-    body: formData,
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("파일 제거 실패");
-      }
-      return response.text();
-    })
-    .then((data) => {
-      console.log(data);
+  if (path.match("modify")) {
+    // modify 요청 처리
+    if (confirm("정말로 파일을 삭제하시겠습니까?")) {
       li.remove();
+    }
+  } else {
+    // register 요청 처리
+    // script 에서 <form> 태그 작성 과 비슷한 개념임
+    const formData = new FormData();
+    formData.append("fileName", targetFile);
+    formData.append("type", type);
+
+    // /deleteFile?fileName=2023/05/20/test.jpg&type=image 이렇게 하고싶다면 fetch 부분에 써도 됨.. - 강의 설명 0530 11시 55분
+    // const data = new URLSearchParams(formData); - 파라메터로 주소줄에 딸려보내는 방식..
+
+    fetch("/deleteFile", {
+      method: "post",
+      body: formData,
     })
-    .catch((error) => console.log(error));
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("파일 제거 실패");
+        }
+        return response.text();
+      })
+      .then((data) => {
+        console.log(data);
+        li.remove();
+      })
+      .catch((error) => console.log(error));
+  }
 });

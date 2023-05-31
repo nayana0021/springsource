@@ -52,6 +52,9 @@
  		</div>
  	</div>
  </div>
+  <script>
+ 	const path = '${pageContext.request.requestURI}';
+ </script>
  <script src="/resources/js/register.js"></script>
  <script src="/resources/js/upload.js"></script>
 <%@ include file="../include/footer.jsp" %>
