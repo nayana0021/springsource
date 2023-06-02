@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -36,17 +37,30 @@ public class TaskTest {
 		
 		// oldList ==> 경로로 변경해야 함 
 		// 이미지 파일이라면 파일목록 + 썸네일 경로 추가
-		List<Path> pathList = new ArrayList<Path>();
+//		List<Path> pathList = new ArrayList<Path>();
+//		
+//		for(AttachFileDTO dto : oldList) {
+//			Path path = Paths.get("/Users/youngkyung/Documents/upload/"+dto.getUploadPath()+"//"+dto.getUuid()+"_"+dto.getFileName());
+//			pathList.add(path);
+//			
+//			if(dto.isFileType()) {
+//				Path thumb = Paths.get("/Users/youngkyung/Documents/upload/"+dto.getUploadPath()+"//s_"+dto.getUuid()+"_"+dto.getFileName());
+//				pathList.add(thumb);
+//			}
+//		}
 		
-		for(AttachFileDTO dto : oldList) {
-			Path path = Paths.get("/Users/youngkyung/Documents/upload/"+dto.getUploadPath()+"//"+dto.getUuid()+"_"+dto.getFileName());
-			pathList.add(path);
-			
-			if(dto.isFileType()) {
-				Path thumb = Paths.get("/Users/youngkyung/Documents/upload/"+dto.getUploadPath()+"//s_"+dto.getUuid()+"_"+dto.getFileName());
-				pathList.add(thumb);
-			}
-		}
+		// oldList 를 stream 변환, 
+		List<Path> pathList = 
+			oldList.stream()
+				.map(dto -> Paths.get("/Users/youngkyung/Documents/upload/"+dto.getUploadPath()+"//"+dto.getUuid()+"_"+dto.getFileName()))
+				.collect(Collectors.toList());
+		
+		oldList.stream()
+			.filter(dto -> dto.isFileType())
+			.map(dto -> Paths.get("/Users/youngkyung/Documents/upload/"+dto.getUploadPath()+"//s_"+dto.getUuid()+"_"+dto.getFileName()))
+			.forEach(dto -> pathList.add(dto));
+		
+		
 		System.out.println(pathList);
 		
 		// 어제날짜 구해서 폴더에 접근한 후 폴더에 있는 파일 목록 가져오기
