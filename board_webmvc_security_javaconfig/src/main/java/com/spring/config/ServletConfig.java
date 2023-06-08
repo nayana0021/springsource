@@ -17,7 +17,7 @@ import org.springframework.web.servlet.view.JstlView;
 @Configuration
 @EnableWebMvc	// <annotation-driven /> 역할
 @ComponentScan(basePackages = {"com.spring.controller"})	// <context:component-scan base-package="com.spring.controller" /> 역할
-@EnableGlobalMethodSecurity(prePostEnabled = true) // @PreAuthorized 활성화 같은 개념
+@EnableGlobalMethodSecurity(prePostEnabled = true) // @PreAuthorized 활성화 같은 개념 이걸 해줘야 로그인 안 했을 때 새글요청하면 로그인 페이지로 이동시켜줌
 public class ServletConfig implements WebMvcConfigurer {
 	// servlet-context 대신
 	

@@ -6,9 +6,9 @@
 <form class="row g-3 justify-content-center" action='<c:url value="/book/search"/>' >
  <div class="col-auto">
 	<select class="form-select" name="criteria">
-		<option selected <c:out value="${searchDTO.criteria == null?'seleted':''}"/> >검색기준선택</option>
-		<option value="writer" <c:out value="${searchDTO.criteria == 'writer'?' selected':''}" /> >writer</option>
-		<option value="title" <c:out value="${searchDTO.criteria == 'title'?' selected':''}" />>title</option>
+		<option <c:out value="${searchDTO.criteria == null?'seleted':''}"/> >검색기준선택</option>
+		<option value="writer" <c:out value="${searchDTO.criteria == 'writer'?'selected':''}" /> >writer</option>
+		<option value="title" <c:out value="${searchDTO.criteria == 'title'?'selected':''}" />>title</option>
 	</select>
  </div>
  <div class="col-md-5">
@@ -31,12 +31,12 @@
 		<c:forEach var="dto" items="${list}">
 			<tr>	
 				<td>${dto.code}</td>
-				<td><a href='<c:url value="/book/read?code=${dto.code}" />' >${dto.title}</a></td> <%-- 무조건 pk 하나 보낸다 --%>
+				<td><a href='<c:url value="/book/read?code=${dto.code}"/>' >${dto.title}</a></td> <%-- 무조건 pk 하나 보낸다 --%>
 				<td>${dto.writer}</td>
 				<td>${dto.price}</td>
 			</tr>
 		</c:forEach>
 	</tbody>
 </table>
-<script src='<c:url value= "/resources/js/list.js"/> '></script>
+<script src='<c:url value= "/resources/js/list.js"/>'></script>
 <%@ include file="../include/footer.jsp"%>
