@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +16,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity	// 클래스를 엔티티로 선언 한다는 의미의 어노테이션 - 테이블을 만들어줌
+//@Table(name="memos") 클래스명으로 테이블 생성할 때 옵션 지정
 @ToString
 @Getter
 @Setter
