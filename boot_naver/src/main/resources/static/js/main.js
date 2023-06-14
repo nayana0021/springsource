@@ -65,3 +65,61 @@ document.querySelector("#wishButton").addEventListener("click", () => {
     .then((data) => console.log(data)) // then 부분은 데이터가 넘어와서 작업하는 부분임
     .catch((error) => console.log(error));
 });
+
+showList();
+
+// wishList 가져오기
+function showList() {
+  fetch("/api/restaurant/all")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("가져올 데이터 없음");
+      }
+      return response.json(); // 넘어오는 데이터 json으로 바꿔줘
+    })
+    .then((data) => {
+      console.log(data);
+
+      let str = "";
+      data.forEach((element) => {
+        str += "<hr class='mt-1' />";
+        str += "<div class='row'>";
+        str += "<div class='col-sm-6 col-md-8'>";
+        str += '<img alt="food" class="img-thumbnail w-100" src="' + element.imageLink + '">';
+        str += "</div>";
+        str += "<div class='col-sm-6 col-md-4'>";
+        str += "<ul class='list-group list-group-flush'>";
+        str += "<li class='list-group-item'>장소 : " + element.title + "</li>";
+        str += "<li class='list-group-item'>Category : " + element.category + "</li>";
+        str += "<li class='list-group-item'>주소 : " + element.address + "</li>";
+        str += "<li class='list-group-item'>도로명 : " + element.roadAddress + "</li>";
+        str += "<li class='list-group-item'>방문여부 : ";
+
+        if (element.visit) {
+          str += "방문";
+        }
+        str += "</li>";
+
+        str += "<li class='list-group-item'>마지막 방문일자 : ";
+
+        if (element.lastVisitDate) {
+          str += element.lastVisitDate;
+        }
+        str += "</li>";
+
+        str += "<li class='list-group-item'>방문횟수 : " + element.visitCount + "</li>";
+        str += "<li class='list-group-item'>";
+        str += "<a href='" + element.homePageLink + "'>홈페이지</a>";
+        str += "</li>";
+        str += "<li class='list-group-item'>";
+        str += "<div class='d-grid gap-2'>";
+        str += "<button class='btn btn-primary' type='button'>방문 추가</button>";
+        str += "<button class='btn btn-warning' type='button'>위시리스트 삭제</button>";
+        str += "</div>";
+        str += "</li></ul></div></div> ";
+      });
+
+      document.querySelector("#wish-list").innerHTML = str;
+    })
+    .catch((error) => console.log(error));
+}

@@ -1,5 +1,7 @@
 package com.example.restaurant.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,5 +34,10 @@ public class ApiController {
 		return wishListService.add(wishListDTO);	// 데이터베이스에서 오는 데이터이기 때문에 idx가 존재
 	}
 	
+	@GetMapping("/all")
+	public List<WishListDTO> getList(){
+		log.info("wish list 요청 ");
+		return wishListService.all();
+	}
 	
 }
